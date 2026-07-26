@@ -1,0 +1,19 @@
+{
+  "name": "f1fantasy-api",
+  "version": "1.0.0",
+  "description": "Backend REST per F1 Fantasy - Progetto Ingegneria dei Sistemi Web",
+  "main": "app.js",
+  "scripts": {
+    "start": "node app.js",
+    "dev": "nodemon app.js"
+  },
+  "dependencies": {
+    "bcryptjs": "^2.4.3",
+    "cors": "^2.8.5",
+    "express": "^4.21.2",
+    "mysql2": "^3.11.5"
+  },
+  "devDependencies": {
+    "nodemon": "^3.1.10"
+  }
+}
