@@ -1,0 +1,21 @@
+<section class="pagina" *ngIf="utente"> <!-- mostro solo se in utente c'è qualcosa -->
+  <div class="intestazione-pagina">
+    <h2>Il mio profilo</h2>
+  </div>
+
+  <div class="card profilo-card">
+    <div class="profilo-avatar">{{ utente.username.charAt(0).toUpperCase() }}</div>
+    <div class="profilo-dati">
+      <h3>{{ utente.nome }} {{ utente.cognome }}</h3>
+      <p><strong>Username:</strong> {{ utente.username }}</p>
+      <p><strong>Email:</strong> {{ utente.email }}</p>
+      <p><strong>Registrato il:</strong> {{ utente.data_registrazione }}</p>
+      <p><strong>Ruolo:</strong> {{ utente.ruolo }}</p>
+      <p class="profilo-crediti">
+        Crediti disponibili: <strong>{{ utente.crediti }}</strong>
+      </p>
+    </div>
+  </div>
+
+  <button class="btn-primario" (click)="logout()">Logout</button>
+</section>

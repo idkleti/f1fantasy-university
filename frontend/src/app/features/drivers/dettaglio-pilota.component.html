@@ -1,0 +1,116 @@
+<section class="pagina">
+  <p><a routerLink="/piloti" class="link-indietro">&larr; Tutti i piloti</a></p>
+  <p class="errore" *ngIf="errore">{{ errore }}</p>
+
+  <div class="pilota-dettaglio" *ngIf="pilota">
+
+    <div class="pilota-foto card" [style.background]="sfondoFoto()">
+      <img *ngIf="fotoDisponibile"
+           [src]="fotoPilota()"
+           [alt]="'Foto di ' + pilota.nome + ' ' + pilota.cognome"
+           (error)="fotoDisponibile = false" />
+
+      <svg *ngIf="!fotoDisponibile"
+           viewBox="0 0 200 230" xmlns="http://www.w3.org/2000/svg" role="img"
+           [attr.aria-label]="'Foto di ' + pilota.nome + ' ' + pilota.cognome">
+        <rect width="200" height="230" rx="10" fill="#1F1F2B"/>
+        <!-- casco -->
+        <path d="M45 120 A55 55 0 0 1 155 120 L155 138 A14 14 0 0 1 141 152
+                 L59 152 A14 14 0 0 1 45 138 Z" [attr.fill]="coloreScuderia()"/>
+        <rect x="58" y="98" width="84" height="24" rx="12" fill="#15151E"/>
+        <path d="M45 120 A55 55 0 0 1 68 76 L60 96 Z" fill="#FFFFFF" opacity="0.25"/>
+        <!-- busto -->
+        <path d="M40 214 A60 34 0 0 1 160 214 L160 222 L40 222 Z"
+              [attr.fill]="coloreScuderia()" opacity="0.85"/>
+        <!-- numero di gara -->
+        <text x="100" y="196" text-anchor="middle" fill="#FFFFFF"
+              font-family="Arial Black, Arial" font-size="34" font-weight="bold">
+          {{ pilota.numero_pilota }}
+        </text>
+        <text x="100" y="24" text-anchor="middle" fill="#7A7A8C"
+              font-family="Arial" font-size="10">foto non disponibile</text>
+      </svg>
+    </div>
+
+    <!-- Dati e statistiche -->
+    <div class="pilota-info">
+      <h2>
+        <span class="numero-grande" [style.color]="coloreScuderia()">
+          #{{ pilota.numero_pilota }}</span>
+        {{ pilota.nome }} {{ pilota.secondo_nome }} {{ pilota.cognome }}
+      </h2>
+      <p>
+        <span class="badge" [style.background]="coloreScuderia()">{{ pilota.scuderia_corrente }}</span>
+        <span class="badge">{{ pilota.nazionalita }}</span>
+        <span class="badge">Debutto {{ pilota.anno_debutto }}</span>
+        <span class="badge">Costo fantasy {{ pilota.costo_fantasy }}</span>
+      </p>
+
+      <div class="statistiche-griglia">
+        <div class="stat card">
+          <span class="stat-valore">{{ pilota.punti_stagione }}</span>
+          <span class="stat-nome">Punti stagione</span>
+        </div>
+        <div class="stat card">
+          <span class="stat-valore">{{ pilota.gare_disputate }}</span>
+          <span class="stat-nome">Gare corse</span>
+        </div>
+        <div class="stat card">
+          <span class="stat-valore">{{ pilota.numero_mondiali }}</span>
+          <span class="stat-nome">Mondiali</span>
+        </div>
+        <div class="stat card">
+          <span class="stat-valore">{{ pilota.numero_pole }}</span>
+          <span class="stat-nome">Pole in carriera</span>
+        </div>
+      </div>
+
+      <p *ngIf="pilota.team_principal">
+        Team principal: <strong>{{ pilota.team_principal }}</strong>
+        (titoli costruttori: {{ pilota.numero_titoli_costruttori }})
+      </p>
+    </div>
+  </div>
+
+  <ng-container *ngIf="pilota">
+    <h3>Statistiche fantasy</h3>
+    <div class="statistiche-griglia stat-fantasy">
+      <div class="stat card">
+        <span class="stat-valore">{{ pilota.punti_stagione }}</span>
+        <span class="stat-nome">Punti fantasy totalizzati</span>
+      </div>
+      <div class="stat card">
+        <span class="stat-valore">{{ pilota.media_punti }}</span>
+        <span class="stat-nome">Media punti a gara</span>
+      </div>
+      <div class="stat card">
+        <span class="stat-valore">{{ pilota.percentuale_selezione }}%</span>
+        <span class="stat-nome">Selezione nei fantateam</span>
+        <span class="stat-nota">
+          {{ pilota.team_con_pilota }} su {{ pilota.team_totali }} team
+        </span>
+      </div>
+    </div>
+
+    <h3>Risultati stagione</h3>
+    <p *ngIf="pilota.risultati.length === 0">Nessuna gara disputata finora.</p>
+    <table *ngIf="pilota.risultati.length > 0">
+      <thead>
+        <tr><th>Gara</th><th>Data</th><th>Posizione</th><th>Giri</th><th>Punti</th></tr>
+      </thead>
+      <tbody>
+        <tr *ngFor="let r of pilota.risultati">
+          <td>{{ r.circuito }}</td>
+          <td>{{ r.data_gara }}</td>
+          <td>
+            <span class="badge" [class.badge-podio]="r.posizione_finale <= 3">
+              P{{ r.posizione_finale }}
+            </span>
+          </td>
+          <td>{{ r.numero_giri }}</td>
+          <td><strong>{{ r.punti_ottenuti }}</strong></td>
+        </tr>
+      </tbody>
+    </table>
+  </ng-container>
+</section>

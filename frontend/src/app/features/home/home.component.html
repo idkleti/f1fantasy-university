@@ -1,0 +1,114 @@
+<!-- ============ HOME OSPITE ============ -->
+<section class="pagina home-ospite" *ngIf="!loggedUser; else homeLoggata">
+
+  <!-- Card della PROSSIMA GARA in cima e in evidenza -->
+  <section class="card gara-card gara-card-evidenza" *ngIf="prossimaGara">
+
+    <!-- foto della gara -->
+    <div class="gara-foto">
+      <img src="assets/f1race.jpg" alt="Monoposto di Formula 1 in gara" />
+    </div>
+
+    <!-- dati della gara -->
+    <div class="gara-info">
+      <span class="gara-round">Round {{ round }}</span>
+      <h3>{{ prossimaGara.citta }}</h3>
+      <p class="gara-nome">{{ prossimaGara.nome }}</p>
+      <p class="gara-data">{{ dataEstesa(prossimaGara.data_gara) }}</p>
+      <p class="gara-paese">{{ prossimaGara.paese }} - {{ prossimaGara.numero_curve }} curve</p>
+    </div>
+
+    <!-- conto alla rovescia e invito a giocare -->
+    <div class="gara-azioni">
+      <div class="countdown">
+        <span class="countdown-titolo">Alla gara:</span>
+        <div class="countdown-valori">
+          <div><strong>{{ dueCifre(giorni) }}</strong><span>giorni</span></div>
+          <div class="due-punti">:</div>
+          <div><strong>{{ dueCifre(ore) }}</strong><span>ore</span></div>
+          <div class="due-punti">:</div>
+          <div><strong>{{ dueCifre(minuti) }}</strong><span>min</span></div>
+        </div>
+      </div>
+      <a routerLink="/piloti">
+        <button class="btn-primario btn-block">Classifica piloti &rsaquo;</button>
+      </a>
+    </div>
+  </section>
+
+  <!-- Divisore a bandiera a scacchi: solo se sopra c'e' la card della gara -->
+  <div class="divisore-scacchi" aria-hidden="true" *ngIf="prossimaGara"></div>
+
+  <div class="hero-riga fascia-chiara">
+    <div class="hero-testo">
+      <h2>Crea il tuo team con i piloti di F1</h2>
+      <p>
+        Scegli i tuoi piloti preferiti rispettando il budget, componi la rosa
+        perfetta e accumula punti a ogni Gran Premio della stagione.
+      </p>
+    </div>
+    <div class="hero-foto">
+      <img src="assets/f1team.jpg" alt="Piloti e monoposto di Formula 1" />
+    </div>
+  </div>
+
+  <div class="hero-riga inversa fascia-bianca">
+    <div class="hero-foto">
+      <img src="assets/f1winner.jpg" alt="Festeggiamenti sul podio di Formula 1" />
+    </div>
+    <div class="hero-testo">
+      <h2>Scommetti e scala la classifica</h2>
+      <p>
+        Punta crediti virtuali su vincitore, podio e pole position dei prossimi
+        Gran Premi: le vincite e i punti dei tuoi piloti ti portano in vetta
+        alla classifica.
+      </p>
+    </div>
+  </div>
+
+  <div class="hero-cta">
+    <h3>Inizia a giocare</h3>
+    <a routerLink="/registrazione"><button class="btn-primario btn-grande">Registrati</button></a>
+  </div>
+</section>
+
+<!-- ============ HOME LOGGATA ============ -->
+<!-- definita in else homeLoggata-->
+<ng-template #homeLoggata>
+  <section class="pagina">
+    <p class="saluto">
+      Ciao <strong>{{ loggedUser?.nome || loggedUser?.username }}</strong>,
+      hai <strong>{{ loggedUser?.crediti }}</strong> crediti disponibili.
+    </p>
+
+    <h2>Cos'e' F1 Fantasy?</h2>
+    <div class="card">
+      <p>
+        F1 Fantasy e' il fantagioco della Formula 1: componi la tua scuderia
+        ideale scegliendo i piloti reali del campionato e guadagni i punti che
+        loro conquistano in pista, gara dopo gara. In piu' puoi scommettere
+        crediti virtuali sui risultati dei Gran Premi non ancora disputati.
+        Niente soldi veri: solo crediti di gioco e gloria in classifica.
+      </p>
+    </div>
+
+    <h2>Come si gioca?</h2>
+    <div class="card">
+      <p>
+        <strong>1. Crea il fantateam</strong>: hai 100 crediti di budget per
+        scegliere da 2 a 5 piloti (massimo 2 della stessa scuderia). I piloti
+        forti costano di piu'.<br/>
+        <strong>2. Scommetti</strong>: punta i tuoi crediti su vincitore, podio
+        o pole delle gare future; la quota dipende dal pilota scelto.<br/>
+        <strong>3. Scala la classifica</strong>: punteggio = punti dei tuoi
+        piloti + crediti vinti / 10. Vince chi costruisce la rosa migliore,
+        non chi tira a indovinare.
+      </p>
+    </div>
+
+    <div class="hero-cta">
+      <span>Inizia con il creare il tuo fantateam</span>
+      <a routerLink="/fantateam/nuovo"><button class="btn-primario">Crea il tuo fantateam</button></a>
+    </div>
+  </section>
+</ng-template>

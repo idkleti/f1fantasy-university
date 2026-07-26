@@ -1,0 +1,45 @@
+<h2>{{ modifica ? 'Modifica Fantateam' : 'Nuovo Fantateam' }}</h2>
+<p class="errore" *ngIf="errore">{{ errore }}</p>
+
+<section class="card">
+  <label>Nome del team *
+    <input [(ngModel)]="nomeTeam" required />
+  </label>
+
+  <p>
+    Piloti selezionati: <strong>{{ selezionati.size }}</strong>
+    (min {{ MIN_PILOTI }}, max {{ MAX_PILOTI }}) -
+    Costo totale: <strong>{{ costoTotale() }}</strong> /
+    {{ BUDGET_MAX }} -
+    Budget residuo:
+    <strong [class.errore]="budgetResiduo() < 0">{{ budgetResiduo() }}</strong>
+  </p>
+  <p class="errore" *ngIf="budgetResiduo() < 0">
+    Budget sforato! Rimuovi qualche pilota.
+  </p>
+</section>
+
+<table>
+  <thead>
+    <tr><th></th><th>#</th><th>Pilota</th><th>Scuderia</th><th>Punti</th><th>Costo</th></tr>
+  </thead>
+  <tbody>
+    <tr *ngFor="let p of piloti">
+      <td>
+        <input type="checkbox"
+               [checked]="selezionati.has(p.numero_pilota)"
+               (change)="toggle(p.numero_pilota)" />
+      </td>
+      <td>{{ p.numero_pilota }}</td>
+      <td>{{ p.cognome }} {{ p.nome }}</td>
+      <td>{{ p.scuderia_corrente }}</td>
+      <td>{{ p.punti_stagione }}</td>
+      <td>{{ p.costo_fantasy }}</td>
+    </tr>
+  </tbody>
+</table>
+
+<button (click)="salva()" [disabled]="!valido()">
+  {{ modifica ? 'Salva modifiche' : 'Crea fantateam' }}
+</button>
+<button (click)="annulla()">Annulla</button>

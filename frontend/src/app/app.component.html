@@ -1,0 +1,39 @@
+<header class="topbar">
+  <a routerLink="/home" class="brand">
+    <img src="assets/f1-logo.png" alt="F1" class="brand-logo" />
+    <span>Fantasy</span>
+  </a>
+
+  <!-- Navigazione ospite (LOGIN in alto a destra) -->
+  <nav *ngIf="!loggedUser">
+    <!-- routerLink è equivalente di href ma senza ricarciare pagina
+      router intercetta e cerca /pagina nelle rotte definite in app.routes.ts e scambia componente in <router-outlet>
+    -->
+    <a routerLink="/home" routerLinkActive="attivo">Home</a>
+    <a routerLink="/piloti" routerLinkActive="attivo">Piloti</a>
+    <a routerLink="/classifica" routerLinkActive="attivo">Classifica</a>
+    <a routerLink="/login" routerLinkActive="attivo" class="nav-login">Login</a>
+  </nav>
+
+  <!-- Navigazione utente loggato (home, fantateam, scommesse, piloti, classifica, profilo) -->
+  <nav *ngIf="loggedUser">
+    <a routerLink="/home" routerLinkActive="attivo">Home</a>
+    <a routerLink="/fantateam" routerLinkActive="attivo">I miei Fantateam</a>
+    <a routerLink="/scommesse" routerLinkActive="attivo">Scommesse</a>
+    <a routerLink="/piloti" routerLinkActive="attivo">Piloti</a>
+    <a routerLink="/classifica" routerLinkActive="attivo">Classifica</a>
+    <a *ngIf="loggedUser.ruolo === 'admin'" routerLink="/admin"
+       routerLinkActive="attivo" class="nav-admin">Admin</a>
+    <a routerLink="/profilo" routerLinkActive="attivo" class="nav-profilo">
+      Profilo <span class="crediti-badge">{{ loggedUser.crediti }} cr</span>
+    </a>
+  </nav>
+</header>
+
+<main>
+  <router-outlet /> <!-- tag auto chiudente riempito ogni volta che cambio pagina con componenti diversi-->
+</main>
+
+<footer>
+  F1 Fantasy - Progetto di Ingegneria dei Sistemi Web - crediti puramente virtuali
+</footer>

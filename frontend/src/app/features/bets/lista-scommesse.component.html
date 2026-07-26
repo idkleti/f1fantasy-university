@@ -1,0 +1,31 @@
+<div class="intestazione-pagina">
+  <h2>Le mie scommesse</h2>
+  <a routerLink="/scommesse/nuova"><button class="btn-primario">+ Nuova scommessa</button></a>
+</div>
+<p class="errore" *ngIf="errore">{{ errore }}</p>
+
+<p *ngIf="scommesse.length === 0">Non hai ancora piazzato scommesse.</p>
+
+<table *ngIf="scommesse.length > 0">
+  <thead>
+    <tr>
+      <th>Gara</th><th>Pilota</th><th>Tipo</th><th>Quota</th>
+      <th>Puntata</th><th>Esito</th><th>Vincita</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr *ngFor="let s of scommesse">
+      <td>{{ s.nome_circuito }}<br /><small>{{ s.data_gara }}</small></td>
+      <td>#{{ s.numero_pilota }} {{ s.pilota_cognome }}</td>
+      <td>{{ s.tipo_scommessa }}</td>
+      <td>{{ s.quota }}</td>
+      <td>{{ s.crediti_puntati }}</td>
+      <td>
+        <span [class.ok]="s.esito === 'vinta'" [class.errore]="s.esito === 'persa'">
+          {{ s.esito }}
+        </span>
+      </td>
+      <td>{{ s.crediti_vinti }}</td>
+    </tr>
+  </tbody>
+</table>

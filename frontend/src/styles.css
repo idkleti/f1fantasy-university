@@ -1,0 +1,816 @@
+/* ==========================================================================
+    F1 Fantasy stile
+   ========================================================================== */
+
+:root {
+  /* superfici scure (header, footer, blocchi di contrasto) */
+  --carbonio: #15151E;
+  --carbonio-2: #1E1E28;
+
+  /* superfici chiare (corpo pagina e card) */
+  --sfondo: #F5F3F1;        /* sfondo pagina, bianco caldo */
+  --carta: #FFFFFF;         /* card, tabelle, campi */
+  --carta-2: #FAF9F8;       /* righe alternate, hover */
+  --bordo: #E2DFDC;
+
+  /* colori F1 */
+  --rosso: #E10600;
+  --rosso-chiaro: #FF1E00;
+  --rosso-scuro: #B00500;
+  --teal: #00A19C;          /* accento */
+  --teal-scuro: #00726E;    /* accento leggibile su fondo chiaro */
+
+  /* testo su fondo chiaro */
+  --testo: #15151E;
+  --testo-2: #45454F;
+  --testo-tenue: #77777F;
+
+  /* stato */
+  --ok: #12864A;
+  --errore: #C81E1E;
+
+  --raggio: 12px;
+  --ombra: 0 1px 2px rgba(21, 21, 30, 0.06), 0 6px 20px rgba(21, 21, 30, 0.07);
+  --font: 'Titillium Web', 'Segoe UI', Tahoma, Arial, sans-serif;
+}
+
+* { box-sizing: border-box; }
+
+body {
+  font-family: var(--font);
+  margin: 0;
+  background:
+    radial-gradient(1100px 400px at 50% -150px, rgba(225, 6, 0, 0.10), transparent 70%),
+    var(--sfondo);
+  background-attachment: fixed;
+  color: var(--testo-2);
+  line-height: 1.5;
+  min-height: 100vh;
+}
+
+/* Sticky footer: header, contenuto e footer in colonna a tutta altezza.
+    Il <main> cresce per riempire lo spazio, spingendo il footer a fondo pagina
+    quando il contenuto e' poco; con contenuto lungo il footer scorre dopo. */
+app-root {
+  display: flex;
+  flex-direction: column;
+  min-height: 100vh;
+}
+main { flex: 1 0 auto; }
+footer { flex-shrink: 0; }
+
+/* ===================== HEADER / NAVIGAZIONE ===================== */
+
+.topbar {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  flex-wrap: wrap;
+  gap: 8px 22px;
+  background: linear-gradient(180deg, #22222C, var(--carbonio));
+  border-bottom: 3px solid var(--rosso);
+  padding: 14px 30px;
+  position: sticky;
+  top: 0;
+  z-index: 20;
+  box-shadow: 0 3px 14px rgba(21, 21, 30, 0.25);
+}
+
+.brand {
+  display: inline-flex;
+  align-items: center;
+  gap: 10px;
+  font-size: 2.3rem;
+  font-weight: 900;
+  font-style: italic;
+  letter-spacing: -0.5px;
+  color: #fff;
+  text-decoration: none;
+  text-transform: uppercase;
+  line-height: 1;
+}
+/* Logo F1 ufficiale (rosso su trasparente) al posto della vecchia "F1" testuale */
+.brand-logo {
+  height: 30px;
+  width: auto;
+  display: block;
+}
+
+.topbar nav {
+  display: flex;
+  align-items: center;
+  flex-wrap: wrap;
+  gap: 3px;
+}
+
+.topbar nav a {
+  color: #D2D2DA;
+  text-decoration: none;
+  font-size: 0.82rem;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 0.4px;
+  padding: 9px 13px;
+  border-radius: 7px;
+  transition: background 0.15s, color 0.15s;
+}
+.topbar nav a:hover { background: rgba(255, 255, 255, 0.09); color: #fff; }
+.topbar nav a.attivo {
+  color: #fff;
+  box-shadow: inset 0 -3px 0 var(--rosso);
+  border-radius: 7px 7px 0 0;
+}
+
+.nav-login, .nav-profilo {
+  background: linear-gradient(180deg, var(--rosso-chiaro), var(--rosso));
+  color: #fff !important;
+  box-shadow: 0 2px 10px rgba(225, 6, 0, 0.35);
+}
+.nav-login:hover, .nav-profilo:hover {
+  background: linear-gradient(180deg, var(--rosso), var(--rosso-scuro)) !important;
+}
+.nav-admin { color: #4FE0D6 !important; }
+
+.crediti-badge {
+  background: rgba(0, 0, 0, 0.28);
+  border: 1px solid rgba(255, 255, 255, 0.3);
+  border-radius: 999px;
+  padding: 1px 9px;
+  font-size: 0.78rem;
+  margin-left: 5px;
+}
+
+/* ===================== LAYOUT DI PAGINA ===================== */
+
+main {
+  width: 100%;             /* larghezza piena nel layout flex (sticky footer),
+                              altrimenti i margini auto la farebbero collassare */
+  max-width: 1080px;
+  margin: 0 auto;
+  padding: 30px 24px 56px;
+}
+
+.pagina { animation: comparsa 0.28s ease-out; }
+@keyframes comparsa {
+  from { opacity: 0; transform: translateY(8px); }
+  to   { opacity: 1; transform: none; }
+}
+
+h2, h3 { color: var(--testo); font-weight: 900; text-transform: uppercase; letter-spacing: 0.3px; }
+h2 {
+  margin: 20px 0 12px;
+  font-size: 1.5rem;
+  padding-left: 12px;
+  border-left: 4px solid var(--rosso);
+}
+h3 { margin: 16px 0 8px; font-size: 1.15rem; }
+
+/* Titolo di pagina con azione in alto a destra (fantateam / scommesse) */
+.intestazione-pagina {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 16px;
+  flex-wrap: wrap;
+  margin-bottom: 10px;
+}
+.intestazione-pagina h2 { margin: 0; }
+
+.card {
+  background: var(--carta);
+  border: 1px solid var(--bordo);
+  border-radius: var(--raggio);
+  box-shadow: var(--ombra);
+  padding: 18px 20px;
+  margin-bottom: 16px;
+}
+
+footer {
+  text-align: center;
+  color: #9A9AA4;
+  font-size: 0.82rem;
+  padding: 22px;
+  background: var(--carbonio);
+  border-top: 3px solid var(--rosso);
+}
+
+.link-indietro { color: var(--teal-scuro); text-decoration: none; font-weight: 700; }
+.link-indietro:hover { text-decoration: underline; }
+a { color: var(--teal-scuro); }
+small { color: var(--testo-tenue); }
+
+/* ===================== PULSANTI ===================== */
+
+button {
+  font: inherit;
+  padding: 10px 20px;
+  border: 1px solid var(--bordo);
+  border-radius: 8px;
+  cursor: pointer;
+  background: var(--carta);
+  color: var(--testo);
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 0.4px;
+  font-size: 0.85rem;
+  transition: background 0.15s, transform 0.05s, box-shadow 0.15s;
+}
+button:hover { background: #EFEDEB; }
+button:active { transform: translateY(1px); }
+button:disabled { background: #EAE8E6; color: #A9A9B2; cursor: not-allowed; box-shadow: none; }
+
+.btn-primario {
+  background: linear-gradient(180deg, var(--rosso-chiaro), var(--rosso));
+  color: #fff;
+  border-color: transparent;
+  box-shadow: 0 2px 10px rgba(225, 6, 0, 0.28);
+}
+.btn-primario:hover { background: linear-gradient(180deg, var(--rosso), var(--rosso-scuro)); }
+.btn-primario:disabled { background: #E7C9C7; color: #fff; box-shadow: none; }
+
+.btn-secondario { background: var(--carbonio); color: #fff; border-color: transparent; }
+.btn-secondario:hover { background: var(--carbonio-2); }
+
+.btn-grande { font-size: 1rem; padding: 14px 38px; }
+.btn-block { width: 100%; margin-top: 14px; }
+
+/* ===================== TABELLE ===================== */
+
+table {
+  border-collapse: collapse;
+  width: 100%;
+  background: var(--carta);
+  border: 1px solid var(--bordo);
+  border-radius: var(--raggio);
+  overflow: hidden;
+  box-shadow: var(--ombra);
+  margin-bottom: 20px;
+  font-size: 0.94rem;
+}
+th, td { padding: 11px 13px; text-align: left; }
+th {
+  background: var(--carbonio);
+  color: #D2D2DA;
+  font-weight: 700;
+  letter-spacing: 0.6px;
+  font-size: 0.74rem;
+  text-transform: uppercase;
+  border-bottom: 3px solid var(--rosso);
+}
+tbody tr { border-top: 1px solid var(--bordo); }
+tbody tr:nth-child(even) { background: var(--carta-2); }
+tbody tr:hover { background: #F1EFED; }
+td { color: var(--testo-2); }
+td a { color: var(--testo); font-weight: 700; text-decoration: none; }
+td a:hover { color: var(--rosso); }
+td strong { color: var(--testo); }
+
+/* ===================== FORM ===================== */
+
+form label { display: block; margin: 12px 0 4px; font-weight: 700; font-size: 0.82rem;
+  text-transform: uppercase; letter-spacing: 0.4px; color: var(--testo-2); }
+input, select {
+  width: 100%;
+  max-width: 440px;
+  padding: 10px 12px;
+  border: 1px solid var(--bordo);
+  border-radius: 8px;
+  font: inherit;
+  background: var(--carta);
+  color: var(--testo);
+  transition: border-color 0.15s, box-shadow 0.15s;
+}
+input::placeholder { color: #A9A9B2; }
+input:focus, select:focus {
+  outline: none;
+  border-color: var(--teal);
+  box-shadow: 0 0 0 3px rgba(0, 161, 156, 0.18);
+}
+input[type="checkbox"] { width: auto; accent-color: var(--rosso); transform: scale(1.25); }
+
+.errore { color: var(--errore); font-weight: 700; font-size: 0.9rem; }
+.ok { color: var(--ok); font-weight: 700; }
+hr { border: none; border-top: 1px solid var(--bordo); margin: 26px 0; }
+
+/* Barra filtri (piloti, pannello admin): campi affiancati con etichetta sopra */
+.filtri {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 18px;
+  align-items: flex-end;
+}
+.filtri label {
+  display: flex;
+  flex-direction: column;
+  gap: 5px;
+  margin: 0;
+  font-weight: 700;
+  font-size: 0.78rem;
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+  color: var(--testo-2);
+}
+.filtri select, .filtri input { min-width: 240px; max-width: none; }
+@media (max-width: 640px) {
+  .filtri { flex-direction: column; align-items: stretch; }
+  .filtri select, .filtri input, .filtri button { min-width: 0; width: 100%; }
+}
+
+/* ===================== BADGE ===================== */
+
+.badge {
+  display: inline-block;
+  background: var(--carbonio);
+  color: #fff;
+  border-radius: 999px;
+  padding: 3px 13px;
+  margin: 2px 4px 2px 0;
+  font-size: 0.8rem;
+  font-weight: 700;
+}
+.badge-podio { background: var(--teal-scuro); }
+
+/* esito scommesse: le celle con .ok/.errore diventano pillole */
+td .ok, td .errore {
+  display: inline-block;
+  padding: 2px 11px;
+  border-radius: 999px;
+  font-size: 0.8rem;
+  text-transform: uppercase;
+}
+td .ok { background: rgba(18, 134, 74, 0.12); }
+td .errore { background: rgba(200, 30, 30, 0.12); }
+
+/* ===================== PAGINE AUTH (login / registrazione) ===================== */
+
+.auth-page { display: flex; justify-content: center; padding: 34px 0; }
+
+.auth-card {
+  background: var(--carta);
+  border: 1px solid var(--bordo);
+  border-top: 4px solid var(--rosso);
+  border-radius: var(--raggio);
+  box-shadow: var(--ombra);
+  padding: 30px 34px 26px;
+  width: 100%;
+  max-width: 440px;
+}
+.auth-card h2 { margin-top: 0; border-left: none; padding-left: 0; }
+.auth-card input { max-width: none; }
+
+.campi-affiancati { display: flex; gap: 14px; }
+.campi-affiancati label { flex: 1; }
+
+.auth-switch {
+  margin-top: 20px;
+  padding-top: 16px;
+  border-top: 1px solid var(--bordo);
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 10px;
+  color: var(--testo-tenue);
+  font-size: 0.9rem;
+}
+
+/* ============ HOME OSPITE A TUTTA LARGHEZZA (fasce alternate) ============
+   La home da ospite esce dal contenitore centrato: main perde il limite di
+   larghezza e i suoi blocchi diventano fasce edge-to-edge. Il contenuto resta
+   pero' incolonnato al centro grazie al padding calcolato, e le fasce si
+   alternano di colore per rendere evidente la divisione fra una e l'altra. */
+main:has(.home-ospite) {
+  max-width: none;
+  padding: 0 0 0;
+}
+
+/* larghezza utile del contenuto dentro le fasce */
+.home-ospite > * {
+  margin-left: 0;
+  margin-right: 0;
+  border-left: none;
+  border-right: none;
+  border-radius: 0;
+}
+.home-ospite .gara-card-evidenza,
+.home-ospite .hero-riga,
+.home-ospite .hero-cta {
+  /* annulla i margini laterali della versione "card" (qui sono fasce piene) */
+  margin: 0 0 0 0;
+  padding-left: max(24px, calc((100% - 1240px) / 2));
+  padding-right: max(24px, calc((100% - 1240px) / 2));
+  border-radius: 0;
+}
+.home-ospite .gara-card-evidenza { padding-top: 30px; padding-bottom: 30px; }
+.home-ospite .hero-riga { padding-top: 44px; padding-bottom: 44px; }
+.home-ospite .hero-cta { padding-top: 46px; padding-bottom: 52px; }
+
+/* colori delle fasce: si alternano per distinguerle a colpo d'occhio */
+.hero-riga.fascia-bianca {
+  background: linear-gradient(120deg, rgba(225, 6, 0, 0.05), transparent 55%), #FFFFFF;
+}
+.hero-riga.fascia-chiara {
+  background: linear-gradient(120deg, rgba(225, 6, 0, 0.05), transparent 55%), #EFECE9;
+  border-top: 1px solid var(--bordo);
+  border-bottom: 1px solid var(--bordo);
+}
+
+/* il divisore a scacchi diventa una fascia a tutta larghezza */
+.home-ospite .divisore-scacchi {
+  margin: 0;
+  -webkit-mask-image: none;
+  mask-image: none;
+}
+
+/* ===================== HOME OSPITE (hero) ===================== */
+
+.hero-riga {
+  display: flex;
+  align-items: center;
+  gap: 32px;
+  background:
+    linear-gradient(120deg, rgba(225, 6, 0, 0.07), transparent 55%),
+    var(--carta);
+  border: 1px solid var(--bordo);
+  border-radius: var(--raggio);
+  box-shadow: var(--ombra);
+  padding: 28px 32px;
+  margin-bottom: 20px;
+  flex-wrap: wrap;
+}
+.hero-riga.inversa { flex-direction: row; }
+.hero-testo { flex: 1.2; min-width: 260px; }
+.hero-testo h2 { margin-top: 0; border-left: none; padding-left: 0; font-size: 1.9rem; }
+.hero-testo p { color: var(--testo-2); font-size: 1.04rem; }
+.hero-foto { flex: 1; min-width: 240px; }
+.hero-foto img {
+  width: 100%;
+  aspect-ratio: 16 / 9;
+  object-fit: cover;
+  display: block;
+  border-radius: 10px;
+  box-shadow: 0 2px 12px rgba(21, 21, 30, 0.12);
+}
+
+.hero-cta {
+  text-align: center;
+  padding: 30px;
+  background:
+    radial-gradient(600px 200px at 50% 0, rgba(225, 6, 0, 0.35), transparent 70%),
+    var(--carbonio);
+  border-radius: var(--raggio);
+  box-shadow: var(--ombra);
+}
+.hero-cta h3 { color: #fff; margin: 0 0 14px; font-size: 1.5rem; }
+.hero-cta span { display: block; margin-bottom: 14px; font-size: 1.05rem; color: #D2D2DA; }
+
+.saluto {
+  font-size: 1.2rem;
+  color: var(--testo-2);
+  background: var(--carta);
+  border: 1px solid var(--bordo);
+  border-left: 4px solid var(--rosso);
+  border-radius: 0 var(--raggio) var(--raggio) 0;
+  box-shadow: var(--ombra);
+  padding: 16px 20px;
+}
+.saluto strong { color: var(--testo); }
+
+/* ===================== CARD PROSSIMA GARA (home) ===================== */
+
+.gara-card {
+  display: flex;
+  gap: 24px;
+  align-items: stretch;
+  flex-wrap: wrap;
+  padding: 18px;
+}
+
+/* Divisore a motivo "bandiera a scacchi": separa la card della prossima gara
+   dal resto della home ospite. Il motivo e' generato interamente in CSS con un
+   repeating-conic-gradient (nessuna immagine da scaricare); la maschera
+   sfuma le due estremita' come una bandiera che ondeggia. */
+.divisore-scacchi {
+  height: 22px;
+  margin: 2px -22px 26px;
+  background-image: repeating-conic-gradient(var(--carbonio) 0% 25%, #FFFFFF 0% 50%);
+  background-size: 22px 22px;
+  -webkit-mask-image: linear-gradient(90deg, transparent 0, #000 10%, #000 90%, transparent 100%);
+          mask-image: linear-gradient(90deg, transparent 0, #000 10%, #000 90%, transparent 100%);
+}
+@media (max-width: 780px) {
+  .divisore-scacchi { margin-left: 0; margin-right: 0; }
+}
+
+/* Variante in evidenza (home ospite): leggermente piu' larga delle altre card,
+   bianco pieno e ombra piu' marcata per staccare dallo sfondo. */
+.gara-card-evidenza {
+  background: #FFFFFF;
+  margin: 0 -22px 22px;      /* sborda di 22px per lato oltre le altre card */
+  padding: 22px 26px;
+  border-top: 4px solid var(--rosso);
+  box-shadow: 0 4px 26px rgba(21, 21, 30, 0.13);
+}
+@media (max-width: 780px) {
+  .gara-card-evidenza { margin-left: 0; margin-right: 0; padding: 18px; }
+}
+
+.gara-foto { width: 280px; flex-shrink: 0; }
+/* object-fit: cover ritaglia la foto mantenendo un'inquadratura uniforme,
+   qualunque siano le proporzioni originali del file */
+.gara-foto img {
+  width: 100%;
+  aspect-ratio: 16 / 10;
+  object-fit: cover;
+  display: block;
+  border-radius: 10px;
+}
+
+.gara-info { flex: 1; min-width: 240px; display: flex; flex-direction: column; }
+.gara-round {
+  align-self: flex-start;
+  background: var(--rosso);
+  color: #fff;
+  font-size: 0.7rem;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 0.9px;
+  padding: 3px 11px;
+  border-radius: 999px;
+}
+.gara-info h3 { margin: 10px 0 2px; font-size: 1.8rem; }
+.gara-nome {
+  margin: 0;
+  font-size: 0.78rem;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 0.4px;
+  color: var(--testo-2);
+}
+.gara-data {
+  margin: 14px 0 0;
+  padding-top: 12px;
+  border-top: 1px solid var(--bordo);
+  font-size: 1.3rem;
+  font-weight: 700;
+  color: var(--testo);
+}
+.gara-paese { margin: 2px 0 0; font-size: 0.85rem; color: var(--testo-tenue); }
+
+.gara-azioni {
+  width: 262px;
+  flex-shrink: 0;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  gap: 10px;
+}
+.gara-azioni a { text-decoration: none; }
+.gara-azioni .btn-block { margin-top: 0; }
+
+.countdown {
+  background: var(--carbonio);
+  border-radius: 10px;
+  padding: 10px 14px;
+  text-align: center;
+}
+.countdown-titolo {
+  display: block;
+  font-size: 0.7rem;
+  color: #B8B8C2;
+  text-transform: uppercase;
+  letter-spacing: 0.6px;
+  margin-bottom: 5px;
+}
+.countdown-valori { display: flex; align-items: flex-start; justify-content: center; gap: 7px; }
+.countdown-valori > div { display: flex; flex-direction: column; }
+.countdown-valori strong { font-size: 1.5rem; font-weight: 900; color: #fff; line-height: 1; }
+.countdown-valori span {
+  font-size: 0.58rem;
+  color: #9A9AA4;
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+  margin-top: 2px;
+}
+.due-punti { color: #6A6A76; font-weight: 900; font-size: 1.3rem; line-height: 1; }
+
+@media (max-width: 780px) {
+  .gara-foto, .gara-azioni { width: 100%; }
+}
+
+/* ===================== CLASSIFICA PILOTI (lista) =====================
+   Righe in stile classifica ufficiale: posizione, foto del pilota, nome,
+   badge della scuderia (cerchio nel colore di squadra con il logo bianco),
+   gare, costo e punti. Ogni riga e' un link alla scheda del pilota. */
+
+.classifica-intestazione,
+.riga-pilota {
+  display: grid;
+  grid-template-columns: 48px minmax(180px, 2.2fr) minmax(150px, 1.6fr) 70px 70px 84px;
+  align-items: center;
+  gap: 12px;
+}
+
+.classifica-intestazione {
+  padding: 0 20px 8px;
+  font-size: 0.72rem;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 0.7px;
+  color: var(--testo-tenue);
+}
+
+.riga-pilota {
+  padding: 10px 20px;
+  margin-bottom: 8px;
+  text-decoration: none;
+  color: inherit;
+  border-left: 5px solid var(--colore-team, var(--bordo));
+  transition: transform 0.12s, box-shadow 0.12s;
+}
+.riga-pilota:hover {
+  transform: translateX(3px);
+  box-shadow: 0 2px 4px rgba(21, 21, 30, 0.08), 0 8px 22px rgba(21, 21, 30, 0.10);
+}
+
+.posizione {
+  font-size: 1.4rem;
+  font-weight: 900;
+  color: var(--testo);
+  text-align: center;
+  font-style: italic;
+}
+
+/* --- pilota: foto + nome --- */
+.pilota-cella { display: flex; align-items: center; gap: 12px; min-width: 0; }
+.pilota-mini {
+  width: 46px;
+  height: 46px;
+  border-radius: 50%;
+  object-fit: cover;
+  object-position: top center;      /* inquadra il volto */
+  background: var(--colore-team, #ddd);
+  flex-shrink: 0;
+}
+.pilota-nome { display: flex; flex-direction: column; min-width: 0; }
+.pilota-nome strong {
+  color: var(--testo);
+  font-size: 1.02rem;
+  text-transform: uppercase;
+  letter-spacing: 0.2px;
+  line-height: 1.2;
+}
+.pilota-nome small { color: var(--testo-tenue); font-size: 0.76rem; }
+
+/* --- scuderia: badge tondo col logo --- */
+.team-cella { display: flex; align-items: center; gap: 10px; min-width: 0; }
+.team-badge {
+  width: 34px;
+  height: 34px;
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-shrink: 0;
+  box-shadow: 0 1px 4px rgba(21, 21, 30, 0.2);
+}
+.team-badge img { width: 22px; height: 22px; object-fit: contain; display: block; }
+.team-nome {
+  font-size: 0.88rem;
+  font-weight: 600;
+  color: var(--testo-2);
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+/* --- numeri --- */
+.col-num, .col-punti { text-align: right; font-variant-numeric: tabular-nums; }
+.col-num { color: var(--testo-2); font-weight: 600; }
+.col-punti { font-size: 1.3rem; font-weight: 900; color: var(--testo); }
+/* etichette mostrate solo sui telefoni, dove l'intestazione sparisce */
+.col-num em, .col-punti em { display: none; }
+
+@media (max-width: 780px) {
+  .classifica-intestazione { display: none; }
+  .riga-pilota {
+    grid-template-columns: 40px 1fr auto;
+    grid-template-areas:
+      "pos pilota punti"
+      "pos team   team";
+    row-gap: 6px;
+  }
+  .riga-pilota .col-pos    { grid-area: pos; }
+  .riga-pilota .col-pilota { grid-area: pilota; }
+  .riga-pilota .col-team   { grid-area: team; }
+  .riga-pilota .col-punti  { grid-area: punti; }
+  .riga-pilota .col-num    { display: none; }   /* gare e costo: solo nella scheda */
+  /* senza intestazione, il numero grande ha bisogno della sua etichetta */
+  .riga-pilota .col-punti em {
+    display: block;
+    font-style: normal;
+    font-size: 0.6rem;
+    font-weight: 700;
+    text-transform: uppercase;
+    letter-spacing: 0.6px;
+    color: var(--testo-tenue);
+  }
+}
+
+/* ===================== DETTAGLIO PILOTA ===================== */
+
+.pilota-dettaglio {
+  display: flex;
+  gap: 24px;
+  align-items: flex-start;
+  flex-wrap: wrap;
+  margin-bottom: 8px;
+}
+.pilota-foto { width: 230px; flex-shrink: 0; padding: 12px; }
+.pilota-foto svg,
+.pilota-foto img { width: 100%; height: auto; display: block; border-radius: 10px; }
+.pilota-info { flex: 1; min-width: 280px; }
+.pilota-info h2 { margin-top: 0; border-left: none; padding-left: 0; }
+.numero-grande { font-size: 1.5em; font-style: italic; font-weight: 900; margin-right: 8px; }
+
+.statistiche-griglia {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(120px, 1fr));
+  gap: 14px;
+  margin: 16px 0;
+}
+.stat { text-align: center; padding: 16px 8px; margin-bottom: 0; }
+.stat-valore { display: block; font-size: 2rem; font-weight: 900; color: var(--rosso);
+  line-height: 1; }
+.stat-nome { display: block; margin-top: 6px; font-size: 0.72rem; color: var(--testo-tenue);
+  text-transform: uppercase; letter-spacing: 0.6px; }
+
+/* Statistiche fantasy: tre riquadri della stessa altezza e larghezza.
+   La nota in fondo (margin-top:auto) resta ancorata in basso, cosi' i numeri
+   e le etichette restano allineati fra i riquadri. */
+.stat-fantasy { grid-template-columns: repeat(auto-fit, minmax(200px, 1fr)); }
+.stat-fantasy .stat { display: flex; flex-direction: column; }
+.stat-nota {
+  display: block;
+  margin-top: auto;
+  padding-top: 8px;
+  font-size: 0.75rem;
+  color: var(--testo-tenue);
+}
+
+/* ===================== GRIGLIA FANTATEAM ===================== */
+
+.griglia-team {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(360px, 1fr));
+  gap: 18px;
+  align-items: start;   /* card di altezza naturale, non stirate */
+}
+.griglia-team .team-card { margin-bottom: 0; }
+.team-card table { margin-bottom: 14px; }
+.team-azioni { display: flex; gap: 10px; }
+
+/* ===================== PROFILO ===================== */
+
+.profilo-card { display: flex; gap: 24px; align-items: center; flex-wrap: wrap; }
+.profilo-avatar {
+  width: 90px;
+  height: 90px;
+  border-radius: 50%;
+  background: linear-gradient(180deg, var(--rosso-chiaro), var(--rosso-scuro));
+  color: #fff;
+  font-size: 2.6rem;
+  font-weight: 900;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-shrink: 0;
+  box-shadow: 0 4px 16px rgba(225, 6, 0, 0.3);
+}
+.profilo-dati h3 { margin: 0 0 8px; border-left: none; padding-left: 0; }
+.profilo-dati p { margin: 3px 0; }
+.profilo-dati strong { color: var(--testo); }
+.profilo-crediti { color: var(--teal-scuro); font-size: 1.1rem; }
+.profilo-crediti strong { color: var(--teal-scuro) !important; }
+
+/* ===================== RESPONSIVE ===================== */
+
+/* Tabelle su schermi stretti: niente celle accalcate, scroll orizzontale */
+@media (max-width: 900px) {
+  table {
+    display: block;
+    overflow-x: auto;
+    white-space: nowrap;
+    -webkit-overflow-scrolling: touch;
+  }
+  th, td { padding: 9px 11px; }
+}
+
+@media (max-width: 640px) {
+  main { padding: 20px 12px 44px; }
+  .topbar { padding: 12px 14px; }
+  .brand { font-size: 1.85rem; gap: 8px; }
+  .brand-logo { height: 24px; }
+  .hero-riga { padding: 20px; }
+  .hero-testo h2 { font-size: 1.5rem; }
+  .campi-affiancati { flex-direction: column; gap: 0; }
+}

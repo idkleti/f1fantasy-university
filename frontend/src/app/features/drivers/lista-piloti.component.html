@@ -1,0 +1,57 @@
+<h2>Classifica piloti</h2>
+<p class="errore" *ngIf="errore">{{ errore }}</p>
+
+<div class="card filtri">
+  <label>Scuderia
+    <select [(ngModel)]="filtroScuderia" (change)="carica()">
+      <option value="">Tutte</option>
+      <option *ngFor="let s of scuderie" [value]="s.nome">{{ s.nome }}</option>
+    </select>
+  </label>
+  <label>Cerca per nome
+    <input [(ngModel)]="ricerca" (input)="carica()" placeholder="es. Lec" />
+  </label>
+</div>
+
+<!-- Intestazione della classifica -->
+<div class="classifica-intestazione">
+  <span class="col-pos">Pos</span>
+  <span class="col-pilota">Pilota</span>
+  <span class="col-team">Scuderia</span>
+  <span class="col-num">Gare</span>
+  <span class="col-num">Costo</span>
+  <span class="col-punti">Punti</span>
+</div>
+
+<p *ngIf="piloti.length === 0">Nessun pilota trovato con questi filtri.</p>
+
+<!--il trackBy: perNumeroPilota identifica ogni riga con il suo "numeroPilota" in modo tale che 
+  quando cambio i filtri e un pilota rispetta i nuovi filtri, la sua riga non venga cancellata e ricreata,
+  causando inefficienza 
+-->
+<a class="riga-pilota card"
+   *ngFor="let p of piloti; let i = index; trackBy: perNumeroPilota"
+   [routerLink]="['/piloti', p.numero_pilota]"
+   [style.--colore-team]="colore(p)">
+
+  <span class="col-pos posizione">{{ i + 1 }}</span>
+
+  <span class="col-pilota pilota-cella">
+    <img class="pilota-mini" [src]="foto(p)" [alt]="p.nome + ' ' + p.cognome" />
+    <span class="pilota-nome">
+      <strong>{{ p.cognome }}</strong>
+      <small>{{ p.nome }} &middot; #{{ p.numero_pilota }} &middot; {{ p.nazionalita }}</small>
+    </span>
+  </span>
+
+  <span class="col-team team-cella">
+    <span class="team-badge" [style.background]="colore(p)">
+      <img *ngIf="logo(p)" [src]="logo(p)" [alt]="p.scuderia_corrente || ''" />
+    </span>
+    <span class="team-nome">{{ p.scuderia_corrente }}</span>
+  </span>
+
+  <span class="col-num"><em>Gare</em>{{ p.gare_disputate }}</span>
+  <span class="col-num"><em>Costo</em>{{ p.costo_fantasy }}</span>
+  <span class="col-punti"><em>Punti</em>{{ p.punti_stagione }}</span>
+</a>

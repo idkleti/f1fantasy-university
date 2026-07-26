@@ -1,0 +1,30 @@
+<section class="auth-page">
+  <div class="auth-card">
+    <h2>Accedi</h2>
+
+    <!--quando form inviato, chiama login()-->
+    <form (ngSubmit)="login()" #form="ngForm">
+      <label>Username
+        <!-- collegamento variabile username a input in entrambe le dir (se cambio input allora variabile username cambia e viceversa)-->
+        <input type="text" name="username" [(ngModel)]="username"
+               required autocomplete="username" />
+      </label>
+
+      <label>Password
+        <input type="password" name="password" [(ngModel)]="password"
+               required autocomplete="current-password" />
+      </label>
+      <!-- non posso fare submit fino a quando il form non è completato in maniera valida -->
+      <button type="submit" class="btn-primario btn-block" [disabled]="form.invalid">
+        Login
+      </button>
+      <!-- mostrato solo quando errore (vedi login.component.ts) contiene qualcosa-->
+      <p class="errore" *ngIf="errore">{{ errore }}</p>
+    </form>
+
+    <div class="auth-switch">
+      <span>Non hai un account?</span>
+      <a routerLink="/registrazione"><button type="button" class="btn-secondario">Registrati</button></a>
+    </div>
+  </div>
+</section>

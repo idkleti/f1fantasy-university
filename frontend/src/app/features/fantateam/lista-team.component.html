@@ -1,0 +1,35 @@
+<div class="intestazione-pagina">
+  <h2>I miei Fantateam</h2>
+  <a routerLink="/fantateam/nuovo"><button class="btn-primario">+ Nuovo</button></a>
+</div>
+<p class="errore" *ngIf="errore">{{ errore }}</p>
+
+<p *ngIf="teams.length === 0">Non hai ancora creato nessun fantateam.</p>
+
+<div class="griglia-team">
+  <section class="card team-card" *ngFor="let t of teams">
+    <h3>{{ t.nome_team }}</h3>
+    <p>
+      Budget residuo: <strong>{{ t.budget_residuo }}</strong> -
+      Punti totali: <strong>{{ t.punti_totali }}</strong>
+    </p>
+    <table>
+      <thead>
+        <tr><th>Pilota</th><th>Scuderia</th><th>Costo</th><th>Punti</th></tr>
+      </thead>
+      <tbody>
+        <tr *ngFor="let p of t.piloti">
+          <td>#{{ p.numero_pilota }} {{ p.cognome }} {{ p.nome }}</td>
+          <td>{{ p.scuderia_corrente }}</td>
+          <td>{{ p.costo_pagato }}</td>
+          <td>{{ p.punti_stagione }}</td>
+        </tr>
+      </tbody>
+    </table>
+    <div class="team-azioni">
+      <!-- costruzione url da array -->
+      <a [routerLink]="['/fantateam/modifica', t.id_team]"><button class="btn-secondario">Modifica</button></a>
+      <button class="btn-primario" (click)="elimina(t.id_team)">Elimina</button>
+    </div>
+  </section>
+</div>

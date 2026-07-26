@@ -1,0 +1,43 @@
+<h2>Nuova scommessa</h2>
+<p class="errore" *ngIf="errore">{{ errore }}</p>
+
+<form class="card" (ngSubmit)="piazza()">
+  <p>Crediti disponibili: <strong>{{ creditiDisponibili }}</strong></p>
+
+  <label>Gara (solo gare future) *
+    <select name="gara" [(ngModel)]="nomeCircuito" required>
+      <option value="">-- scegli la gara --</option>
+      <option *ngFor="let g of gareFuture" [value]="g.nome">
+        {{ g.nome }} ({{ g.data_gara }})
+      </option>
+    </select>
+  </label>
+
+  <label>Pilota *
+    <select name="pilota" [(ngModel)]="numeroPilota" required>
+      <option [ngValue]="null">-- scegli il pilota --</option>
+      <option *ngFor="let p of piloti" [ngValue]="p.numero_pilota">
+        #{{ p.numero_pilota }} {{ p.cognome }} ({{ p.scuderia_corrente }})
+      </option>
+    </select>
+  </label>
+
+  <label>Tipo di scommessa *
+    <select name="tipo" [(ngModel)]="tipo" required>
+      <option value="vincitore">Vincitore della gara</option>
+      <option value="podio">A podio (primi 3)</option>
+      <option value="pole">Pole position</option>
+    </select>
+  </label>
+
+  <label>Crediti da puntare *
+    <input type="number" name="crediti" [(ngModel)]="crediti" min="1" required />
+  </label>
+  <p class="errore" *ngIf="crediti > creditiDisponibili">
+    Non hai abbastanza crediti.
+  </p>
+
+  <p><small>La quota viene calcolata dal server al momento della conferma.</small></p>
+
+  <button type="submit" [disabled]="!valido()">Piazza scommessa</button>
+</form>

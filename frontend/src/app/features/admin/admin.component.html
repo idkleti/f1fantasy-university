@@ -1,0 +1,138 @@
+<h2>Pannello amministrazione</h2>
+
+<!-- ========== SEZIONE 1: CHIUSURA GARA ========== -->
+<section class="card">
+  <h3>Chiudi una gara</h3>
+  <p>
+    <small>
+      Inserisci l'ordine di arrivo: il sistema registra i risultati, regola
+      tutte le scommesse in attesa e aggiorna i punti dei fantateam
+      in un'unica transazione.
+    </small>
+  </p>
+
+  <div class="filtri">
+    <label>Gara da chiudere *
+      <select [(ngModel)]="garaDaChiudere">
+        <option value="">-- scegli la gara --</option>
+        <option *ngFor="let g of gareFuture" [value]="g.nome">
+          {{ g.nome }} ({{ g.data_gara }})
+        </option>
+      </select>
+    </label>
+
+    <label>Pole position
+      <select [(ngModel)]="polePilota">
+        <option [ngValue]="null">-- nessuna --</option>
+        <!-- ngValue conserva il tipo reale, value è solo stringa-->
+        <option *ngFor="let p of piloti" [ngValue]="p.numero_pilota">
+          #{{ p.numero_pilota }} {{ p.cognome }}
+        </option>
+      </select>
+    </label>
+  </div>
+
+  <table>
+    <thead>
+      <tr><th>Pos.</th><th>Pilota</th><th>Punti</th><th>Giri</th></tr>
+    </thead>
+    <tbody>
+      <tr *ngFor="let r of righe">
+        <td>{{ r.posizione }}</td>
+        <td>
+          <select [(ngModel)]="r.numero_pilota">
+            <option [ngValue]="null">-- nessuno --</option>
+            <option *ngFor="let p of piloti" [ngValue]="p.numero_pilota">
+              #{{ p.numero_pilota }} {{ p.cognome }} ({{ p.scuderia_corrente }})
+            </option>
+          </select>
+        </td>
+        <td><input type="number" [(ngModel)]="r.punti" min="0" style="width:70px" /></td>
+        <td><input type="number" [(ngModel)]="r.giri" min="0" style="width:70px" /></td>
+      </tr>
+    </tbody>
+  </table>
+
+  <p class="errore" *ngIf="pilotiDuplicati()">
+    Lo stesso pilota compare in piu' posizioni.
+  </p>
+  <p class="errore" *ngIf="righeValide().length > 0 && righeValide().length < 3">
+    Servono almeno 3 piloti classificati.
+  </p>
+
+  <button (click)="chiudiGara()" [disabled]="!chiusuraValida()">Chiudi gara</button>
+  <p class="ok" *ngIf="esitoChiusura">{{ esitoChiusura }}</p>
+  <p class="errore" *ngIf="erroreChiusura">{{ erroreChiusura }}</p>
+</section>
+
+<!-- ========== SEZIONE 2: SCOMMESSE ========== -->
+<section class="card">
+  <h3>Scommesse per gara</h3>
+  <div class="filtri">
+    <label>Gara
+      <select [(ngModel)]="garaScommesse" (change)="caricaScommesse()">
+        <option value="">-- scegli la gara --</option>
+        <option *ngFor="let g of tutteLeGare" [value]="g.nome">
+          {{ g.nome }} {{ g.disputata === 'Y' ? '(disputata)' : '' }}
+        </option>
+      </select>
+    </label>
+  </div>
+
+  <p *ngIf="garaScommesse && scommesseGara.length === 0">
+    Nessuna scommessa su questa gara.
+  </p>
+  <table *ngIf="scommesseGara.length > 0">
+    <thead>
+      <tr>
+        <th>Utente</th><th>Pilota</th><th>Tipo</th><th>Quota</th>
+        <th>Puntata</th><th>Esito</th><th></th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr *ngFor="let s of scommesseGara">
+        <td>{{ s.username }}</td>
+        <td>#{{ s.numero_pilota }} {{ s.pilota_cognome }}</td>
+        <td>{{ s.tipo_scommessa }}</td>
+        <td>{{ s.quota }}</td>
+        <td>{{ s.crediti_puntati }}</td>
+        <td>
+          <!--applica classe ok se scommessa vinta-->
+          <span [class.ok]="s.esito === 'vinta'" [class.errore]="s.esito === 'persa'">
+            {{ s.esito }}
+          </span>
+        </td>
+        <td>
+          <button *ngIf="s.esito === 'in_attesa'"
+                  (click)="annullaScommessa(s.id_scommessa)">
+            Annulla e rimborsa
+          </button>
+        </td>
+      </tr>
+    </tbody>
+  </table>
+  <p class="ok" *ngIf="esitoScommesse">{{ esitoScommesse }}</p>
+</section>
+
+<!-- ========== SEZIONE 3: CREDITI BONUS ========== -->
+<section class="card">
+  <h3>Crediti bonus</h3>
+  <div class="filtri">
+    <label>Utente
+      <select [(ngModel)]="utenteSelezionato">
+        <option [ngValue]="null">-- scegli l'utente --</option>
+        <option *ngFor="let u of utenti" [ngValue]="u.id_utente">
+          {{ u.username }} ({{ u.crediti }} crediti - {{ u.ruolo }})
+        </option>
+      </select>
+    </label>
+    <label>Crediti da assegnare
+      <input type="number" [(ngModel)]="creditiBonus" min="1" />
+    </label>
+    <button class="btn-primario" (click)="assegnaCrediti()"
+            [disabled]="!utenteSelezionato || creditiBonus <= 0">
+      Assegna crediti
+    </button>
+  </div>
+  <p class="ok" *ngIf="esitoCrediti">{{ esitoCrediti }}</p>
+</section>

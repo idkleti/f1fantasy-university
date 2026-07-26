@@ -1,0 +1,62 @@
+<section class="auth-page">
+  <div class="auth-card">
+    <h2>Registrati</h2>
+
+    <form (ngSubmit)="registra()" #form="ngForm">
+      <label>Username *
+        <!-- 
+          #uCtrl="ngModel" crea var uCtrl per effetuare controlli sul campo
+          la stessa logica si applica anche ai controlli sotto
+        -->
+        <input name="username" [(ngModel)]="username" required minlength="3" #uCtrl="ngModel" />
+      </label>
+      <p class="errore" *ngIf="uCtrl.invalid && uCtrl.touched"> <!-- metto anche touched perchè se non ci fosse allora
+                                                                    comparirebbe in automatico "Almeno 3 caratteri"-->
+        Almeno 3 caratteri
+      </p>
+
+      <label>Email *
+        <input type="email" name="email" [(ngModel)]="email" required email #eCtrl="ngModel" />
+      </label>
+      <p class="errore" *ngIf="eCtrl.invalid && eCtrl.touched">
+        Inserire un indirizzo email valido
+      </p>
+
+      <div class="campi-affiancati">
+        <label>Nome
+          <input name="nome" [(ngModel)]="nome" />
+        </label>
+        <label>Cognome
+          <input name="cognome" [(ngModel)]="cognome" />
+        </label>
+      </div>
+
+      <label>Password * (minimo 8 caratteri)
+        <input type="password" name="password" [(ngModel)]="password"
+               required minlength="8" #pCtrl="ngModel" autocomplete="new-password" />
+      </label>
+      <p class="errore" *ngIf="pCtrl.invalid && pCtrl.touched">
+        La password deve avere almeno 8 caratteri
+      </p>
+
+      <label>Conferma Password *
+        <input type="password" name="confermaPassword" [(ngModel)]="confermaPassword"
+               required #cCtrl="ngModel" autocomplete="new-password" />
+      </label>
+      <p class="errore" *ngIf="cCtrl.touched && !passwordCoincidono()">
+        Le due password non coincidono
+      </p>
+
+      <button type="submit" class="btn-primario btn-block"
+              [disabled]="form.invalid || !passwordCoincidono()">
+        Registrati
+      </button>
+      <p class="errore" *ngIf="errore">{{ errore }}</p>
+    </form>
+
+    <div class="auth-switch">
+      <span>Hai gia' un account?</span>
+      <a routerLink="/login"><button type="button" class="btn-secondario">Accedi</button></a>
+    </div>
+  </div>
+</section>
